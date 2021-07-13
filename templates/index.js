@@ -36,7 +36,7 @@ exports.buildBddSlackMessage = (argv, data) => {
             text: {
                 type: 'mrkdwn',
                 text: `*Failed Tests:*\n\t${_.map(_.keys(data.failed.features), (feature, index) => {
-                    return `${index + 1}. ${feature}\n\t\t • ${data.failed.features[feature].join('\n\t\t • ')}`;
+                    return `${index + 1}. ${feature}\n\t\t • ${data.failed.features[feature].join('\n\t\t • ')}\n`;
                 })}`
             }
         });
@@ -97,6 +97,5 @@ exports.buildBddSlackMessage = (argv, data) => {
         });
     }
 
-    console.log(JSON.stringify(message));
     return message;
 };
