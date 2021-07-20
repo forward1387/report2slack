@@ -14,11 +14,13 @@ require('yargs')
         let message = require('./templates')
           .buildBddSlackMessage(argv, require('./reporters/cucumber.html.reporter')(fullPath));
         
+        console.log(JSON.stringify(message));
+        
         return superagent
             .post(argv.s)
             .send(message)
             .end((err, res) => {
-                if(err) throw new Error(err.message)
+                if(err) throw new Error(err.message);
                 
                 console.log(JSON.stringify(res.text)); 
             });

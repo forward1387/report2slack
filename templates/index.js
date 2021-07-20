@@ -35,9 +35,9 @@ exports.buildBddSlackMessage = (argv, data) => {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*Failed Tests:*\n\t${_.map(_.keys(data.failed.features), (feature, index) => {
-                    return `${index + 1}. ${feature}\n\t\t • ${data.failed.features[feature].join('\n\t\t • ')}\n`;
-                })}`
+                text: `*Failed Tests:*\n\`\`\`${_.map(_.keys(data.failed.features), (feature, index) => {
+                    return `${index + 1}. ${feature}\n • ${data.failed.features[feature].join('\n • ')}\n`;
+                }).join('')}\`\`\``
             }
         });
     }
@@ -47,9 +47,9 @@ exports.buildBddSlackMessage = (argv, data) => {
             type: 'section',
             text: {
                 type: 'mrkdwn',
-                text: `*Passed Tests:*\n\t${_.map(_.keys(data.passed.features), (feature, index) => {
-                    return `${index + 1}. ${feature}\n\t\t • ${data.passed.features[feature].join('\n\t\t • ')}`;
-                })}`
+                text: `*Passed Tests:*\n\t\`\`\`${_.map(_.keys(data.passed.features), (feature, index) => {
+                    return `${index + 1}. ${feature}\n • ${data.passed.features[feature].join('\n • ')}`;
+                }).join('')}\`\`\``
             }
         });
     }
