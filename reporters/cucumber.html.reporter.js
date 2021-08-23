@@ -1,23 +1,30 @@
 'use strict';
 const _ = require('underscore');
 
-module.exports = (fPath) => {
-    let data = require(fPath);
+let summary = {
+    passed: {
+        count: 0,
+        features: {}
+    },
+    failed: {
+        count: 0,
+        features: {}
+    },
+    skipped: {
+        count: 0,
+        features: {}
+    },
+    exceptions: []
+};
 
-    let summary = {
-        passed: {
-            count: 0,
-            features: {}
-        },
-        failed: {
-            count: 0,
-            features: {}
-        },
-        skipped: {
-            count: 0,
-            features: {}
-        }
-    };
+module.exports = (fPath) => {
+
+    let data = {};
+    try {
+        data = require(fPath);
+    } catch(e) {
+        summary.exceptions.push(e.message);
+    }
 
     let update = (status, fname, sname) => {
         summary[status].count += 1;
