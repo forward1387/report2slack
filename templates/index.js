@@ -89,6 +89,35 @@ exports.buildBddSlackMessage = (argv, data) => {
             });
         }
 
+        if (data.skipped.count > 0 && argv.skipped) {
+
+            let scenarios = [];
+
+            let index = 0;
+            let total = 0;
+            _.each(_.keys(data.skipped.features), (feature) => {
+                _.each(data.skipped.features[feature], (scenario) => {
+                    let description = `\t${index + 1}. Scenario: ${scenario}\n`;
+
+                    total += description.length;
+
+                    if (total < 9700) {
+                        index += 1;
+                        scenarios.push(description);
+                    }
+                });
+            });
+
+
+            message.attachments[0].blocks.push({
+                type: 'section',
+                text: {
+                    type: 'mrkdwn',
+                    text: `*Skipped Scenarios:*\`\`\`\n${scenarios.join('')}\`\`\``
+                }
+            });
+        }
+
         if (argv.r) {
             message.attachments[0].blocks.push({
                 type: 'section',

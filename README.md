@@ -6,6 +6,8 @@ report2slack <cmd> --file <path to *.json report file> --slack <slack incoming h
 Commands:
   report2slack cucumber-html-reporter  Sends cucumber html reporter results to
                                        slack channel
+  report2slack junit                   Sends junit(*.xml) results to slack
+                                       channel
 
 Options:
   --version     Show version number                                    [boolean]

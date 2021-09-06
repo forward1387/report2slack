@@ -3,6 +3,7 @@
 const fs = require('fs'),
     path = require('path'),
     superagent = require('superagent');
+const { result } = require('underscore');
 
 require('yargs')
     .scriptName('report2slack')
@@ -24,10 +25,26 @@ require('yargs')
                 
                 console.log(JSON.stringify(res.text)); 
             });
-    })
-    .option('file', {
+    }).command('junit', 'Sends junit(*.xml) results to slack channel', (yargs) => yargs, (argv) => {
+        let fullPath = path.isAbsolute(argv.f) ? argv.f : path.join(__dirname, argv.f);
+        if(!fs.existsSync(fullPath)) throw new Error(`Report file '${fullPath}' does not exist.`);
+
+        let message = require('./templates')
+          .buildBddSlackMessage(argv, require('./reporters/junit.xml.reporter')(fullPath));
+
+        console.log(JSON.stringify(message));
+        
+        return superagent
+            .post(argv.s)
+            .send(message)
+            .end((err, res) => {
+                if(err) throw new Error(err.message);
+                
+                console.log(JSON.stringify(res.text)); 
+            });
+    }).option('file', {
         alias: 'f',
-        describe: 'path to the cucumber-html-reporter *.json file',
+        describe: 'path to the report file  *.(json|xml) file',
         demandOption: true
     })
     .option('slack', {
